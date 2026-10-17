@@ -1,0 +1,37 @@
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes flicker { 0%,100% { opacity: 1; } 91% { opacity: 1; } 92% { opacity: .93; } 94% { opacity: 1; } 97% { opacity: .96; } }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes lampPulse { 0%,100% { box-shadow: 0 0 6px 1px rgba(255,179,71,.45); opacity: .85; } 50% { box-shadow: 0 0 16px 4px rgba(255,179,71,.85); opacity: 1; } }
+@keyframes glowPulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes grain { 0% { transform: translate(0,0); } 25% { transform: translate(-3%,2%); } 50% { transform: translate(2%,-3%); } 75% { transform: translate(-2%,-1%); } 100% { transform: translate(0,0); } }
+@keyframes tear {
+  0% { transform: translate(0,0) skewX(0); filter: none; }
+  12% { transform: translate(-6px,0) skewX(4deg); filter: hue-rotate(-30deg) contrast(1.4); }
+  24% { transform: translate(5px,1px) skewX(-6deg); }
+  36% { transform: translate(-3px,-2px) skewX(2deg); filter: blur(1px) brightness(1.5); }
+  50% { transform: translate(8px,0) skewX(-3deg); filter: contrast(1.6) saturate(1.5); }
+  64% { transform: translate(-4px,1px) skewX(5deg); }
+  80% { transform: translate(2px,0) skewX(-1deg); filter: none; }
+  100% { transform: translate(0,0) skewX(0); }
+}
+@keyframes bands { 0% { transform: translateY(-110%); } 100% { transform: translateY(110%); } }
+@keyframes needleSeek {
+  0% { transform: rotate(-62deg); } 18% { transform: rotate(-8deg); } 34% { transform: rotate(-44deg); }
+  52% { transform: rotate(30deg); } 70% { transform: rotate(4deg); } 86% { transform: rotate(14deg); } 100% { transform: rotate(10deg); }
+}
+@keyframes introOut { to { opacity: 0; visibility: hidden; } }
+@keyframes siteOn { from { clip-path: inset(49.5% 0 49.5% 0); opacity: .2; } 55% { clip-path: inset(0 0 0 0); opacity: .9; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+@keyframes rainFall { from { background-position: 0 0, 0 0; } to { background-position: -40px 220px, -20px 320px; } }
+@keyframes fogDrift { from { transform: translateX(-8%); } to { transform: translateX(8%); } }
+@keyframes twinkle { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+@keyframes barFlutter { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes stamp { from { opacity: 0; transform: rotate(-8deg) scale(1.4); } to { opacity: .9; transform: rotate(-8deg) scale(1); } }
+
+.anim-blink { animation: blink 1s steps(1) infinite; }
+.anim-flicker { animation: flicker 7s linear infinite; }
+.anim-bob { animation: bob 3.6s ease-in-out infinite; }
+.anim-lamp { animation: lampPulse 2.2s ease-in-out infinite; }
+.anim-glow { animation: glowPulse 3s ease-in-out infinite; }
+.anim-tear { animation: tear .9s steps(2, end) 2; }
+.anim-rise { animation: rise .6s ease-out both; }

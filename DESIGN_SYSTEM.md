@@ -1,32 +1,106 @@
-# Design system
+# Design System - Squelch: Dead Air FM
 
-## Palette (tokens in `tailwind.config.js` and `:root` in `src/index.css`)
+This document describes the visual language, design tokens, typography, effects, and reusable interface components used throughout Squelch: Dead Air FM.
 
-| Token | Hex | Use |
-| --- | --- | --- |
-| void | `#0A0D18` | Page background |
-| console | `#141A2E` | Panels, buttons |
-| bakelite / violet | `#5B4B8A` / `#7A68A8` | Squelch's body, borders, dial housing |
-| teal / teal-shadow | `#3F8F8B` / `#2A5F5C` | Speaker grille, "connected" state, panel accents |
-| cream | `#E8DFC8` | Main text, dial face |
-| phosphor | `#7CFFB2` | Live-signal readouts, success |
-| amber | `#FFB347` | ON AIR lamp, discoveries, emotional beats |
-| signal (red) | `#FF3B3B` | The opening transmission, interference, wrong answers |
-| muted | `#9AA3C4` | Secondary text |
+The design combines a vintage radio interface, pixel-art aesthetics, CRT-inspired effects, and a dark, atmospheric colour palette.
 
-Rule of thumb: mostly dark; red for static, teal/green for signal, amber only when something matters.
+## Colour Palette
 
-## Type
+The colour tokens are defined in `tailwind.config.js` and the `:root` section of `src/index.css`.
 
-- **Pixelify Sans**: headings (sentence case)
-- **Silkscreen**: small system labels and buttons
-- **VT323**: terminal text, frequency readouts, Squelch's spoken lines
-- **Space Mono**: body copy (15px, line-height 1.7)
+| Token | Hex | Purpose |
+|---|---|---|
+| `void` | `#0A0D18` | Primary page background |
+| `console` | `#141A2E` | Panels, buttons, and interface surfaces |
+| `bakelite` | `#5B4B8A` | Squelch's body and radio housing |
+| `violet` | `#7A68A8` | Character details, borders, and dial housing accents |
+| `teal` | `#3F8F8B` | Speaker grille, connected states, and interface accents |
+| `teal-shadow` | `#2A5F5C` | Darker teal details and shadows |
+| `cream` | `#E8DFC8` | Primary text and dial face |
+| `phosphor` | `#7CFFB2` | Live-signal readouts and successful interactions |
+| `amber` | `#FFB347` | ON AIR indicators, discoveries, and emotional highlights |
+| `signal` | `#FF3B3B` | Opening transmission, interference, and incorrect answers |
+| `muted` | `#9AA3C4` | Secondary text and subdued interface elements |
 
-## Effects (all respect `prefers-reduced-motion`)
+### Colour Principles
 
-`TypewriterText` + `.cursor`, `.fx-scanlines`, `.fx-noise`, `.fx-vignette`, `.anim-tear` (signal tear), `.fx-bands`, `.anim-bob`, `.anim-lamp`, `.site-on` (CRT power-on reveal), weather overlays in `effects.css`.
+- **Dark first:** `void` and `console` establish the atmosphere and provide contrast for interface elements.
+- **Red means interference:** Reserve `signal` for transmission effects, glitches, and incorrect answers.
+- **Teal and green mean connection:** Use `teal`, `teal-shadow`, and `phosphor` for interface accents and signal feedback.
+- **Amber means something matters:** Use `amber` sparingly for discoveries, important indicators, and emotional moments.
+- **Violet defines Squelch:** Use `bakelite` and `violet` to establish the character's visual identity.
 
-## Components
+The interface should remain predominantly dark, with brighter colours used intentionally rather than decoratively.
 
-`TerminalPanel` (framed panel with corner brackets), `SignalIndicator` (5-bar meter), `AudioControls` (mute toggle), `SquelchCharacter` (mood-driven sprite, optional poke interaction).
+## Typography
+
+Four locally bundled typefaces establish the visual hierarchy.
+
+| Font | Intended use | Characteristics |
+|---|---|---|
+| **Pixelify Sans** | Headings | Pixel-inspired display typography, generally in sentence case |
+| **Silkscreen** | Small system labels and buttons | Compact, pixel-styled interface text |
+| **VT323** | Terminal text, frequency readouts, and Squelch's spoken lines | Retro terminal and radio-display styling |
+| **Space Mono** | Body copy | Monospaced text for readable supporting content |
+
+### Body Text
+
+Space Mono is the primary typeface for body copy, with a target size of `15px` and a line-height of `1.7`.
+
+Typography should distinguish narrative content from technical interface elements without making the experience feel like a conventional dashboard.
+
+## Visual Effects and Animation
+
+The interface uses layered effects to evoke analogue radio equipment, CRT displays, signal interference, and a powered-on console.
+
+| Effect or class | Purpose |
+|---|---|
+| `TypewriterText` | Reveals text progressively, like a transmission being received |
+| `.cursor` | Provides a cursor treatment for typewriter-style text |
+| `.fx-scanlines` | Adds horizontal CRT scanlines |
+| `.fx-noise` | Adds visual noise and analogue interference |
+| `.fx-vignette` | Darkens the edges of the display |
+| `.anim-tear` | Creates a signal-tear or glitch effect |
+| `.fx-bands` | Adds signal-band visual effects |
+| `.anim-bob` | Animates subtle floating or bobbing movement |
+| `.anim-lamp` | Animates the pilot lamp |
+| `.site-on` | Provides the CRT-style power-on reveal |
+| Weather overlays | Adds atmospheric weather effects, defined in `effects.css` |
+
+### Motion and Accessibility
+
+All motion effects must respect the user's `prefers-reduced-motion` setting.
+
+When reduced motion is requested, avoid unnecessary movement and disruptive transitions while preserving the content and essential functionality of the experience.
+
+## Reusable Components
+
+The following components provide the recurring interface patterns used throughout the project.
+
+### `TerminalPanel`
+
+A framed interface panel with corner brackets, reinforcing the appearance of a vintage terminal or radio console.
+
+### `SignalIndicator`
+
+A five-bar meter used to represent signal strength visually.
+
+### `AudioControls`
+
+The interface for controlling audio playback, including the mute toggle.
+
+### `SquelchCharacter`
+
+The pixel-art character component. It supports mood-driven sprite variations and an optional poke interaction.
+
+## Design Principles
+
+The design system follows five guiding principles:
+
+1. **Atmosphere over decoration:** Every visual effect should support the feeling of receiving a mysterious radio transmission.
+2. **Consistent visual language:** Reuse the defined colours, fonts, effects, and component patterns across the interface.
+3. **Meaningful colour:** Red, teal, green, and amber communicate different kinds of feedback rather than serving as arbitrary accents.
+4. **Readable interfaces:** Retro styling should not come at the expense of legibility or usable controls.
+5. **Accessible motion:** Respect reduced-motion preferences while preserving the experience's essential interactions.
+
+Together, these decisions create a cohesive visual identity for Squelch: Dead Air FM, balancing retro radio nostalgia with an interactive, character-driven experience.

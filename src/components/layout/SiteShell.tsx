@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useRadio } from '../../hooks/useRadioState';
+import CursorTrail from '../effects/CursorTrail';
 import Footer from './Footer';
 import Navigation from './Navigation';
 
@@ -27,10 +28,14 @@ export default function SiteShell({ children }: { children: ReactNode }) {
   }, [tunedIn, setFrequency, children]);
 
   return (
-    <div className="site-on relative">
-      <Navigation />
-      <main>{children}</main>
-      <Footer />
-    </div>
+    <>
+      {/* Outside .site-on on purpose: that wrapper is animated, and a fixed canvas must stay viewport-sized. */}
+      <CursorTrail />
+      <div className="site-on relative">
+        <Navigation />
+        <main>{children}</main>
+        <Footer />
+      </div>
+    </>
   );
 }

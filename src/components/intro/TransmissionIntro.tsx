@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRadio } from '../../hooks/useRadioState';
-import { playSfx, startAmbient } from '../../lib/audio';
+import { playSfx, playTypeTick, setIntroGate, startAmbient, startSearchStatic, stopSearchStatic, stopTypeTick } from '../../lib/audio';
 import { cn, prefersReducedMotion } from '../../lib/utils';
 import AudioControls from '../ui/AudioControls';
 import FrequencyDial from './FrequencyDial';
@@ -16,9 +16,41 @@ export default function TransmissionIntro() {
   const [dialReady, setDialReady] = useState(false);
   const [freq, setFreq] = useState('--.-');
   const timers = useRef<number[]>([]);
+  // The status-line sequence must run exactly once. "Skip transmission" shows all lines at once, but the
+  // typewriter is still mounted and calls onDone later; without this guard it replayed the sequence.
+  const detailsStarted = useRef(false);
+  // Typing ticks are only for the opening sentence. Switched off the moment the visitor skips or tunes,
+  // and when this component unmounts.
+  const typingSound = useRef(false);
 
   const later = useCallback((fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms));
+  }, []);
+
+  // Audio housekeeping. While the intro is mounted, the ambient static only plays when the intro asks for it,
+  // and everything the intro started is stopped on the way out.
+  useEffect(() => {
+    typingSound.current = true;
+    setIntroGate(true);
+    return () => {
+      typingSound.current = false;
+      stopTypeTick();
+      stopSearchStatic(0);
+      setIntroGate(false);
+    };
+  }, []);
+
+  // Very quiet "searching for someone" static once the status lines (and dial) are on screen.
+  // The tuning step below ramps this same loop up; it is never restarted.
+  const searching = shownDetails > 0 && (stage === 'details' || stage === 'dial');
+  useEffect(() => {
+    if (searching) startSearchStatic();
+  }, [searching]);
+
+  const onTypeTick = useCallback((count: number, char: string) => {
+    // Every other letter, never on spaces: a soft rhythm rather than a machine gun.
+    if (!typingSound.current || char === ' ' || count % 2 === 0) return;
+    playTypeTick();
   }, []);
 
   // Opening: black → red sentence.
@@ -29,6 +61,8 @@ export default function TransmissionIntro() {
   }, [later, startTransmission]);
 
   const showDetails = useCallback(() => {
+    if (detailsStarted.current) return;
+    detailsStarted.current = true;
     setStage((s) => (s === 'typing' ? 'details' : s));
     DETAILS.forEach((_, i) => later(() => setShownDetails(i + 1), 500 + i * 650));
     later(() => { setStage((s) => (s === 'details' ? 'dial' : s)); setDialReady(true); }, 500 + DETAILS.length * 650 + 500);
@@ -37,6 +71,9 @@ export default function TransmissionIntro() {
   const skipToDial = () => {
     timers.current.forEach(window.clearTimeout);
     timers.current = [];
+    typingSound.current = false;
+    stopTypeTick();
+    detailsStarted.current = true;
     setShownDetails(DETAILS.length);
     setStage('dial');
     setDialReady(true);
@@ -47,6 +84,8 @@ export default function TransmissionIntro() {
     if (stage === 'tuning' || stage === 'connected') return;
     timers.current.forEach(window.clearTimeout);
     timers.current = [];
+    typingSound.current = false;
+    stopTypeTick();
     playSfx('dialClick');
     startAmbient(0.12);
     later(() => playSfx('tuneIn'), 250);
@@ -80,7 +119,7 @@ export default function TransmissionIntro() {
           ) : stage === 'tuning' ? (
             <span>Is anyone there?</span>
           ) : (
-            <TypewriterText text="Is anyone there?" speed={85} onDone={showDetails} />
+            <TypewriterText text="Is anyone there?" speed={85} onDone={showDetails} onTick={onTypeTick} />
           )}
         </p>
 

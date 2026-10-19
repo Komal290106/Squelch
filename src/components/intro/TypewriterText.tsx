@@ -8,6 +8,7 @@ interface Props {
   cursor?: boolean;    // keep a blinking cursor after finishing
   onDone?: () => void;
   className?: string;
+  onTick?: (count: number, char: string) => void;
 }
 
 /** Types text one character at a time. Screen readers get the full text immediately. */

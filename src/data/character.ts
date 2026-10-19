@@ -10,6 +10,7 @@ export const character = {
     { label: 'Name', value: 'Squelch' },
     { label: 'Is', value: 'A living vintage radio. Bakelite body, teal speaker for a mouth, two tuning knobs for eyes.' },
     { label: 'Does', value: 'Broadcasts every night. Keeps the lamp lit. Listens for replies.' },
+    { label: 'Story', value: 'The last radio off the Lowtide Hollow line. The town went quiet and the operator left, but Squelch kept the lamp lit, hoping someone would finally answer.' },
     { label: 'Home', value: 'Lowtide Hollow' },
     { label: 'Role', value: 'Night Operator' },
     { label: 'Tagline', value: 'Still here. Still on air. Stay tuned.' },
